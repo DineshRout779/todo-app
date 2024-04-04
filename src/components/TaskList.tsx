@@ -7,10 +7,10 @@ const TaskList = ({
   children,
 }: React.PropsWithChildren<TaskListProps>) => {
   return (
-    <>
+    <div>
       {header}
-      <ul>{children}</ul>
-    </>
+      <ul className="list">{children}</ul>
+    </div>
   );
 };
 

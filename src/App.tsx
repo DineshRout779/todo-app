@@ -19,6 +19,18 @@ const App = () => {
     ]);
   };
 
+  const handleDeleteTask = (id: number) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
+
+  const handleEditTask = (id: number, updatedTask: string) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, title: updatedTask } : task,
+      ),
+    );
+  };
+
   return (
     <div>
       <h1>Tasks</h1>
@@ -26,7 +38,12 @@ const App = () => {
       <TaskList>
         <TaskListHeader count={tasks.length} />
         {tasks.map((task) => (
-          <TaskListItem key={task.id}>{task.title}</TaskListItem>
+          <TaskListItem
+            key={task.id}
+            task={task}
+            onDelete={handleDeleteTask}
+            onEdit={handleEditTask}
+          />
         ))}
       </TaskList>
     </div>

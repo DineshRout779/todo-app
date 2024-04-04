@@ -1,5 +1,72 @@
-const TaskListItem = ({ children }: React.PropsWithChildren) => {
-  return <li>{children}</li>;
+import { useState } from 'react';
+import { Task } from '../types';
+
+type TaskListItemProps = {
+  task: Task;
+  onEdit: (id: number, newTask: string) => void;
+  onDelete: (id: number) => void;
+};
+
+const TaskListItem = ({ task, onEdit, onDelete }: TaskListItemProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [newTask, setNewTask] = useState(task.title);
+
+  const handleConfirmDelete = (id: number) => {
+    const confirmation = confirm('Are you sure you want to delete?');
+
+    if (confirmation) {
+      onDelete(id);
+    }
+  };
+
+  const handleEdit = (e: React.FormEvent<HTMLFormElement>, id: number) => {
+    e.preventDefault();
+    if (!newTask.trim().length) {
+      return;
+    }
+
+    onEdit(id, newTask);
+    setIsEditing(false);
+  };
+
+  return (
+    <div className="task">
+      {isEditing ? (
+        <form onSubmit={(e) => handleEdit(e, task.id)}>
+          <li>
+            <input
+              type="text"
+              value={newTask}
+              onChange={(e) => setNewTask(e.target.value)}
+            />
+          </li>
+          <button type="submit" className="save">
+            Save
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsEditing(false)}
+            className="cancel"
+          >
+            Cancel
+          </button>
+        </form>
+      ) : (
+        <>
+          <li>{task.title}</li>
+          <button onClick={() => setIsEditing(true)} className="edit">
+            Edit
+          </button>
+          <button
+            onClick={() => handleConfirmDelete(task.id)}
+            className="delete"
+          >
+            Delete
+          </button>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default TaskListItem;
