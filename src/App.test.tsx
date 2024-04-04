@@ -105,4 +105,23 @@ describe('App', () => {
       });
     });
   });
+
+  test('should delete task when delete button is clicked', async () => {
+    render(<App />);
+
+    // Add a task
+    const input = screen.getByRole('textbox', { name: 'Add Task:' });
+    const addButton = screen.getByRole('button', { name: 'Add' });
+    await userEvent.type(input, 'Task to be deleted');
+    await userEvent.click(addButton);
+
+    // Delete the task
+    const deleteButton = screen.getByRole('button', { name: 'Delete' });
+    await userEvent.click(deleteButton);
+
+    // Assert the task is deleted
+    await waitFor(() => {
+      expect(screen.queryByText('Task to be deleted')).not.toBeInTheDocument();
+    });
+  });
 });
