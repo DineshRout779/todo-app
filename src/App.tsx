@@ -11,16 +11,16 @@ type Task = {
 
 const App = () => {
   const [task, setTask] = useState('');
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: 1,
-      title: 'Learn React',
-      isCompleted: true,
-    },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const handleAddTask = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const trimmedTaskName = task.trim();
+
+    if (!trimmedTaskName) {
+      return;
+    }
 
     setTasks([
       ...tasks,
@@ -30,6 +30,8 @@ const App = () => {
         isCompleted: false,
       },
     ]);
+
+    setTask('');
   };
 
   return (
