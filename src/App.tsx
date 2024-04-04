@@ -36,6 +36,7 @@ const App = () => {
     <div>
       <h1>Tasks</h1>
       <form onSubmit={handleAddTask}>
+        <label htmlFor="todo">Add Task:</label>
         <input
           type="text"
           id="todo"
