@@ -75,4 +75,34 @@ describe('App', () => {
       expect(screen.queryAllByRole('listitem')).toHaveLength(1);
     });
   });
+
+  test('should edit task when edit button is clicked', async () => {
+    render(<App />);
+
+    // Add a task at first
+    const input = screen.getByRole('textbox', { name: 'Add Task:' });
+    const addButton = screen.getByRole('button', { name: 'Add' });
+    await userEvent.type(input, 'Task to be edited');
+    await userEvent.click(addButton);
+
+    const editButton = screen.getByRole('button', { name: 'Edit' });
+    await userEvent.click(editButton);
+
+    // wait for edit input to render
+    await waitFor(async () => {
+      const editInput = screen.getByRole('textbox', { name: 'editInput' });
+      expect(editInput).toBeInTheDocument();
+
+      // when input has rendered ==> type on the input and save
+      await userEvent.clear(editInput);
+      await userEvent.type(editInput, 'Edited Task');
+      const saveButton = screen.getByRole('button', { name: 'Save' });
+      await userEvent.click(saveButton);
+
+      // check if the task is updated
+      await waitFor(() => {
+        expect(screen.getByText('Edited Task')).toBeInTheDocument();
+      });
+    });
+  });
 });
