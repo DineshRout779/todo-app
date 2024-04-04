@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Task } from './types';
 import AddTaskForm from './components/AddTaskForm';
+import TaskList from './components/TaskList';
+import TaskListItem from './components/TaskListItem';
+import TaskListHeader from './components/TaskListHeader';
 
 const App = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -16,17 +19,16 @@ const App = () => {
     ]);
   };
 
-  console.log('rendered');
-
   return (
     <div>
       <h1>Tasks</h1>
       <AddTaskForm onTaskAdd={handleAddTask} />
-      <ul>
+      <TaskList>
+        <TaskListHeader count={tasks.length} />
         {tasks.map((task) => (
-          <li key={task.id}>{task.title}</li>
+          <TaskListItem key={task.id}>{task.title}</TaskListItem>
         ))}
-      </ul>
+      </TaskList>
     </div>
   );
 };
