@@ -39,7 +39,10 @@ const TaskListItem = ({ task, onEdit, onDelete }: TaskListItemProps) => {
           </button>
           <button
             type="button"
-            onClick={() => setIsEditing(false)}
+            onClick={() => {
+              setIsEditing(false);
+              setNewTask(task.title);
+            }}
             className="cancel"
           >
             Cancel
