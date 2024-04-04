@@ -11,14 +11,6 @@ const TaskListItem = ({ task, onEdit, onDelete }: TaskListItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTask, setNewTask] = useState(task.title);
 
-  const handleConfirmDelete = (id: number) => {
-    const confirmation = confirm('Are you sure you want to delete?');
-
-    if (confirmation) {
-      onDelete(id);
-    }
-  };
-
   const handleEdit = (e: React.FormEvent<HTMLFormElement>, id: number) => {
     e.preventDefault();
     if (!newTask.trim().length) {
@@ -35,6 +27,8 @@ const TaskListItem = ({ task, onEdit, onDelete }: TaskListItemProps) => {
         <form onSubmit={(e) => handleEdit(e, task.id)}>
           <li>
             <input
+              name="editInput"
+              title="editInput"
               type="text"
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
@@ -57,10 +51,7 @@ const TaskListItem = ({ task, onEdit, onDelete }: TaskListItemProps) => {
           <button onClick={() => setIsEditing(true)} className="edit">
             Edit
           </button>
-          <button
-            onClick={() => handleConfirmDelete(task.id)}
-            className="delete"
-          >
+          <button onClick={() => onDelete(task.id)} className="delete">
             Delete
           </button>
         </>
